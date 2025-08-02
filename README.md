@@ -184,13 +184,17 @@ class Board {
 }
 
 class Tetrimino {
-    - tetrimino: TetriminoType
-    - rotation: int
-    - position: set[int, int]
+    - type: TetriminoType
+    - pos_x: int | None
+    - pos_y: int | None
+    - rot: int | None
     ---
     + rotate_clockwise()
     + rotate_counter_clockwise()
-    + set_position(int, int)
+    + move_left()
+    + move_right()
+    + move_down()
+    + set_state(rot: int, pos_x: int, pos_y: int)
 }
 
 Enum TetriminoType {
