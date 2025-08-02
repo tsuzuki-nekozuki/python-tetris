@@ -71,13 +71,13 @@ class ReplayScene extends BaseScene {
     - state: str
     - speed: int
     ---
-    + load_history(fname: Union[str, Path])
+    + load_history(fname: str | Path)
     + play()
     + stop()
 }
 
 class MenuScene extends BaseScene {
-    - options: Dict
+    - options: dict
     - selected_option: str
 }
 
@@ -159,7 +159,7 @@ class TetrisCanvas {
 }
 
 class TetriminoSkin {
-    - pattern_file: Union[str, Path]
+    - pattern_file: str | Path
     - patterns: Dict
     - colors: Dict
     ---
@@ -186,10 +186,11 @@ class Board {
 class Tetrimino {
     - tetrimino: TetriminoType
     - rotation: int
-    - position: Tuple[int, int]
+    - position: set[int, int]
     ---
     + rotate_clockwise()
     + rotate_counter_clockwise()
+    + set_position(int, int)
 }
 
 Enum TetriminoType {
@@ -202,7 +203,7 @@ Enum TetriminoType {
     L
     ---
     - id: int
-    - shapes: List[NDArray[np.uint8]]
+    - shapes: list[NDArray[np.uint8]]
     ---
     + shape(rotation: int)
 }
@@ -218,12 +219,12 @@ class TetriminoFactory {
 
 class History {
     - frame_id: int
-    - input_key: Union[str, None]
-    - frames: List[Frame_data]
+    - input_key: str | None
+    - frames: list[Frame_data]
     ---
-    + save_frame(frame_id: int, frame: FrameData, input_key: str, board: List[List[int]])
-    + write(fname: Union[str, Path])
-    + read(fname: Union[str, Path])
+    + save_frame(frame_id: int, frame: FrameData, input_key: str, board: list[list[int]])
+    + write(fname: str | Path)
+    + read(fname: str | Path)
     + get_frame(frame_id: int)
     + get_next_frame()
     + get_previous_frame()
@@ -232,7 +233,7 @@ class History {
 class FrameData <<frozen dataclass>> {
     - tetrimino: str
     - rotation: int
-    - position: Tuple[int, int]
+    - position: set[int, int]
 }
 
 WindowManager --> SceneManager: gets key

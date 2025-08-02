@@ -1,8 +1,6 @@
 import random
 import time
 
-from typing import Tuple
-
 import numpy as np
 
 from numpy.typing import NDArray
@@ -18,7 +16,7 @@ class TetriminoFactory:
         self.tetrimino_choices = [i.name for i in TetriminoType]
         self.rotation_choices = [i for i in range(4)]
 
-    def generate_random(self) -> Tuple[str, int, NDArray[np.uint8]]:
+    def generate_random(self) -> tuple[str, int, NDArray[np.uint8]]:
         tetrimino_type = random.choice(self.tetrimino_choices)
         rotation = random.choice(self.rotation_choices)
         tetrimino = self._generate_tetrimino(tetrimino_type, rotation)
@@ -26,7 +24,7 @@ class TetriminoFactory:
 
     def generate_fixed(self,
                        tetrimino_type: str,
-                       rotation: int) -> Tuple[str, int, NDArray[np.uint8]]:
+                       rotation: int) -> tuple[str, int, NDArray[np.uint8]]:
         tetrimino = self._generate_tetrimino(tetrimino_type, rotation)
         return tetrimino_type, rotation, tetrimino
 
