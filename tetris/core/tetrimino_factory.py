@@ -23,10 +23,10 @@ class TetriminoFactory:
         return tetrimino_name, rotation, tetrimino
 
     def generate_fixed(self,
-                       tetrimino_type: str,
+                       tetrimino_name: str,
                        rotation: int) -> tuple[str, int, NDArray[np.uint8]]:
-        tetrimino = self._generate_tetrimino(tetrimino_type, rotation)
-        return tetrimino_type, rotation, tetrimino
+        tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
+        return tetrimino_name, rotation, tetrimino
 
     def _generate_tetrimino(self, tetrimino_type: str, rotation: int):
         try:
