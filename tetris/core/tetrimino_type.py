@@ -73,3 +73,9 @@ class TetriminoType(Enum):
 
     def shape(self, rotation: int = 0):
         return self.shapes[rotation % len(self.shapes)]
+
+    def rot(self, shape: NDArray):
+        return self.shapes.index(shape)
+
+    def size(self):
+        return self.shapes[0].shape[0]
