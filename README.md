@@ -166,21 +166,51 @@ class TetriminoSkin {
     + load_skin()
 }
 
-class Board {
-    - width: int
-    - height: int
-    - play_field: NDArray[np.uint32]
+class PlayerStatus <<dataclass>> {
     - score: int
     - lines: int
     - level: int
     ---
-    + move_tetrimino()
-    + is_collided()
-    + is_dropped()
+    + add_score(cleared_lines: int, n_fast_drop: int)
+    + calculate_level(cleared_lines: int)
+}
+
+class Board {
+    - play_width: int
+    - play_height: int
+    - side_margin: int
+    - top_margin: int
+    - bottom_margin: int
+    - max_tetrimino_size: int
+    - max_width: int
+    - max_height: int
+    - tetris_field: NDArray[np.uint8]
+    - active_tetrimino: Tetrimino | None
+    ---
+    + create_new_tetrimino()
+    + move_tetrimino(move: MoveType)
+    + will_collide()
     + is_locked()
+    + count_fast_drop()
+    + reset_fast_drop()
+    + update_play_field()
     + delete_lines()
-    + add_score()
-    + calculate_level()
+    - _is_overlapping()
+    - _will_collide_left()
+    - _will_collide_right()
+    - _will_collide_bottom()
+    - _will_not_have_clockwise_rotation()
+    - _will_not_have_counter_clockwise_rotation()
+    - _will_collide_tetrimino()
+}
+
+Enum MoveType {
+    LEFT = 1
+    RIGHT = 2
+    DOWN = 3
+    DROP = 4
+    ROTATE_CW = 5
+    ROTATE_CCW = 6
 }
 
 class Tetrimino {
@@ -210,6 +240,8 @@ Enum TetriminoType {
     - shapes: list[NDArray[np.uint8]]
     ---
     + shape(rotation: int)
+    + rot(shape: NDArray[np.uint8])
+    + size()
 }
 
 class TetriminoFactory {
@@ -243,15 +275,18 @@ class FrameData <<frozen dataclass>> {
 WindowManager --> SceneManager: gets key
 SceneManager --> BaseScene: manages
 GameScene --> Board
-GameScene --> Tetrimino
+GameScene --> PlayerStatus
 GameScene --> TetriminoFactory
 ReplayScene --> Board
-ReplayScene --> Tetrimino
+ReplayScene --> PlayerStatus
+ReplayScene --> TetriminoFactory
 ReplayScene --> History
 TetriminoFactory --> TetriminoType
 Tetrimino -- TetriminoType
 WindowManager --> Renderer: draws
 Board --> History
+Board --> Tetrimino
+Board -- MoveType
 History --> FrameData
 Renderer --> SceneRenderer: manages
 GameSceneRenderer --> TetrisCanvas
