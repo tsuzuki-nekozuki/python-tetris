@@ -3,14 +3,15 @@ from .tetrimino_type import TetriminoType
 
 class Tetrimino:
     def __init__(self,
-                 tetrimino: TetriminoType,
+                 tetrimino_type: TetriminoType,
                  pos_x: int | None = None,
                  pos_y: int | None = None,
                  rot: int | None = None):
-        self.type = tetrimino
+        self.type = tetrimino_type
+        # Position is top left corner of the Tetrimino
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.rot = rot
+        self.rot = rot if rot is None else tetrimino_type.rot()
 
     def rotate_clockwise(self):
         if self.rot is None:
