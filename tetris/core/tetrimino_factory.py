@@ -17,10 +17,10 @@ class TetriminoFactory:
         self.rotation_choices = [i for i in range(4)]
 
     def generate_random(self) -> tuple[str, int, NDArray[np.uint8]]:
-        tetrimino_type = random.choice(self.tetrimino_choices)
+        tetrimino_name = random.choice(self.tetrimino_choices)
         rotation = random.choice(self.rotation_choices)
-        tetrimino = self._generate_tetrimino(tetrimino_type, rotation)
-        return tetrimino_type, rotation, tetrimino
+        tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
+        return tetrimino_name, rotation, tetrimino
 
     def generate_fixed(self,
                        tetrimino_type: str,
