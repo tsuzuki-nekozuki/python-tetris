@@ -170,8 +170,12 @@ class PlayerStatus <<dataclass>> {
     - score: int
     - lines: int
     - level: int
+    - min_level: int
+    - max_level: int
+    - max_cleared_lines: int
+    - base_score: list
     ---
-    + add_score(cleared_lines: int, n_fast_drop: int)
+    + add_score(cleared_lines: int)
     + calculate_level(cleared_lines: int)
 }
 
