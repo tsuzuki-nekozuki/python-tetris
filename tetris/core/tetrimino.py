@@ -42,3 +42,6 @@ class Tetrimino:
         self.rot = rot % len(self.type.shapes)
         self.pos_x = pos_x
         self.pos_y = pos_y
+
+    def get_state(self):
+        return self.type.shape(self.rot)

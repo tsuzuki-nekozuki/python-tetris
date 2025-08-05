@@ -28,6 +28,32 @@ This project focuses on learning software development practices, including:
 
 ---
 
+## Coordinate Systems
+
+This project uses three different coordinate systems:
+
+1. Game coordinates `(x, y)`
+   - Origin: Top-left of the playable area
+   - x: horizontal (right +)  
+   - y: vertical (down +)
+   - Used for Tetrimino position and Board logic.
+
+2. NumPy array indices `[row, col]`
+   - Origin: Top-left of the array
+   - `row = y`  
+   - `col = x`  
+   - Used internally for collision checks and board state updates.
+
+3. OpenCV pixel coordinates `(px, py)`
+   - Origin: Top-left of the rendered frame
+   - `px = x * block_size`  
+   - `py = y * block_size`  
+   - Used for rendering with `cv2.rectangle` or `cv2.putText`.
+
+> Conversion functions are provided in `utils.py` to translate between these coordinates when needed.
+
+---
+
 ## Class diagram
 The following class diagram provides an overview of the core structure of this Tetris implementation, including the main classes and their relationships. It distinguishes between the game logic and the UI layer, which are designed to be modular and loosely coupled. (This diagram was generated using PlantUML.)
 
@@ -180,12 +206,12 @@ class PlayerStatus <<dataclass>> {
 }
 
 class Board {
-    - play_width: int
-    - play_height: int
-    - side_margin: int
-    - top_margin: int
-    - bottom_margin: int
+    - width: int
+    - height: int
     - max_tetrimino_size: int
+    - side_margin: int
+    - ceil_margin: int
+    - floor_margin: int
     - max_width: int
     - max_height: int
     - tetris_field: NDArray[np.uint8]
@@ -193,16 +219,14 @@ class Board {
     ---
     + create_new_tetrimino()
     + move_tetrimino(move: MoveType)
-    + will_collide()
-    + is_locked()
-    + count_fast_drop()
-    + reset_fast_drop()
+    + will_collide(move: MoveType)
     + update_play_field()
     + delete_lines()
-    - _is_overlapping()
+    - _init_field()
+    - _is_overlapping(tetrimino: Tetrimino)
     - _will_collide_left()
     - _will_collide_right()
-    - _will_collide_bottom()
+    - _will_collide_floor()
     - _will_not_have_clockwise_rotation()
     - _will_not_have_counter_clockwise_rotation()
     - _will_collide_tetrimino()

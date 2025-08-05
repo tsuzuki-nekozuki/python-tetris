@@ -20,13 +20,13 @@ class TetriminoFactory:
         tetrimino_name = random.choice(self.tetrimino_choices)
         rotation = random.choice(self.rotation_choices)
         tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
-        return tetrimino_name, rotation, tetrimino
+        return tetrimino, rotation
 
     def generate_fixed(self,
                        tetrimino_name: str,
                        rotation: int) -> tuple[str, int, NDArray[np.uint8]]:
         tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
-        return tetrimino_name, rotation, tetrimino
+        return tetrimino, rotation
 
     def _generate_tetrimino(self, tetrimino_type: str, rotation: int):
         try:

@@ -70,12 +70,10 @@ class TetriminoType(Enum):
     def __init__(self, id_value, shapes):
         self.id: int = id_value
         self.shapes: List[NDArray[np.uint8]] = shapes
+        self.size: int = self.shapes[0].shape[0]
 
     def shape(self, rotation: int = 0):
         return self.shapes[rotation % len(self.shapes)]
 
     def rot(self, shape: NDArray):
         return self.shapes.index(shape)
-
-    def size(self):
-        return self.shapes[0].shape[0]
