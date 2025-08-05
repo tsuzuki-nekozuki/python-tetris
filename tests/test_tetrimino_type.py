@@ -49,8 +49,16 @@ class TestTetriminoType(unittest.TestCase):
         target_shape = np.array([[0, 0, 0],
                                  [3, 3, 3],
                                  [0, 3, 0]])
-        print(TetriminoType['T'].rot(target_shape))
         self.assertEqual(TetriminoType.T.rot(target_shape), 2)
+
+    def test_cannnot_find_rot(self):
+        target_shape = np.array([[0, 0, 0],
+                                 [2, 2, 2],
+                                 [0, 2, 0]])
+        
+        with self.assertRaises(ValueError) as cm:
+            TetriminoType.T.rot(target_shape)
+        self.assertIn('Can not find the shape.', str(cm.exception))
 
 
 if __name__ == '__main__':
