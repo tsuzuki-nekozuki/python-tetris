@@ -72,8 +72,11 @@ class TetriminoType(Enum):
         self.shapes: List[NDArray[np.uint8]] = shapes
         self.size: int = self.shapes[0].shape[0]
 
-    def shape(self, rotation: int = 0):
+    def shape(self, rotation: int = 0) -> NDArray[np.uint8]:
         return self.shapes[rotation % len(self.shapes)]
 
-    def rot(self, shape: NDArray):
-        return self.shapes.index(shape)
+    def rot(self, shape: NDArray) -> int:
+        for i, ishape in enumerate(self.shapes):
+            if np.array_equal(ishape, shape):
+                return i
+        raise ValueError('Can not find the shape.')

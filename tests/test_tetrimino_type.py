@@ -38,6 +38,20 @@ class TestTetriminoType(unittest.TestCase):
                 nonzero = values[values > 0]
                 self.assertTrue(np.all(nonzero == t.id))
 
+    def test_shape_size(self):
+        """Test if all shapes are NxN shaped."""
+        for t in TetriminoType:
+            for shape in t.shapes:
+                self.assertEqual(shape.shape[0], shape.shape[1])
+                self.assertEqual(shape.shape[0], t.size)
+
+    def test_get_rot(self):
+        target_shape = np.array([[0, 0, 0],
+                                 [3, 3, 3],
+                                 [0, 3, 0]])
+        print(TetriminoType['T'].rot(target_shape))
+        self.assertEqual(TetriminoType.T.rot(target_shape), 2)
+
 
 if __name__ == '__main__':
     unittest.main()
