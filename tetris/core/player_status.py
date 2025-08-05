@@ -17,6 +17,7 @@ class PlayerStatus:
             raise ValueError('Wrong cleared lines: {}.'.format(cleared_lines))
         line_score = self.base_scores[cleared_lines] * (self.level + 1)
         self.score += line_score
+        self.lines += cleared_lines
 
     def calculate_level(self):
         if self.level < self.max_level:
