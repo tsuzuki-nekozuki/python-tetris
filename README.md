@@ -234,6 +234,7 @@ class Board {
 }
 
 Enum MoveType {
+    NO_MOVE = 0
     LEFT = 1
     RIGHT = 2
     DOWN = 3
@@ -303,13 +304,13 @@ class FrameData <<frozen dataclass>> {
 
 WindowManager --> SceneManager: gets key
 SceneManager --> BaseScene: manages
-GameScene --> Board
-GameScene --> PlayerStatus
-GameScene --> TetriminoFactory
-ReplayScene --> Board
-ReplayScene --> PlayerStatus
-ReplayScene --> TetriminoFactory
-ReplayScene --> History
+GameScene --> Board: handle tetriminos
+GameScene --> PlayerStatus: calculate score
+GameScene --> TetriminoFactory: generate tetrimino
+ReplayScene --> Boar: replay tetriminos
+ReplayScene --> PlayerStatus: calculate score
+ReplayScene --> TetriminoFactory: reproduce tetrimino
+ReplayScene --> History: get history
 TetriminoFactory --> TetriminoType
 Tetrimino -- TetriminoType
 WindowManager --> Renderer: draws

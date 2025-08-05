@@ -12,6 +12,7 @@ from .tetrimino_type import TetriminoType
 
 
 class MoveType(Enum):
+    NO_MOVE = 0
     LEFT = 1
     RIGHT = 2
     DOWN = 3
