@@ -209,6 +209,7 @@ class Board {
     - width: int
     - height: int
     - max_tetrimino_size: int
+    - wall_id: int
     - side_margin: int
     - ceil_margin: int
     - floor_margin: int

@@ -68,6 +68,7 @@ class Board:
         f_line_deleted = np.delete(self.tetris_field, cleared_lines, axis=0)
         f_new_add_lines = np.full((len(cleared_lines), self.max_width),
                                   self.wall_id).astype(np.uint8)
+        f_new_add_lines[:, self.side_margin:self.width + self.side_margin] = 0
         self.tetris_field = np.vstack([f_new_add_lines, f_line_deleted])
 
     def will_collide(self, move: MoveType) -> tuple[bool, Tetrimino | None]:
