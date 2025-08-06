@@ -55,7 +55,6 @@ class TestTetriminoType(unittest.TestCase):
         target_shape = np.array([[0, 0, 0],
                                  [2, 2, 2],
                                  [0, 2, 0]])
-        
         with self.assertRaises(ValueError) as cm:
             TetriminoType.T.rot(target_shape)
         self.assertIn('Can not find the shape.', str(cm.exception))

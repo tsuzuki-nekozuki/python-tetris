@@ -1,10 +1,6 @@
 import random
 import time
 
-import numpy as np
-
-from numpy.typing import NDArray
-
 from .tetrimino_type import TetriminoType
 
 
@@ -16,23 +12,21 @@ class TetriminoFactory:
         self.tetrimino_choices = [i.name for i in TetriminoType]
         self.rotation_choices = [i for i in range(4)]
 
-    def generate_random(self) -> tuple[str, int, NDArray[np.uint8]]:
+    def generate_random(self) -> tuple[TetriminoType, int]:
         tetrimino_name = random.choice(self.tetrimino_choices)
         rotation = random.choice(self.rotation_choices)
-        tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
+        tetrimino = self._generate_tetrimino(tetrimino_name)
         return tetrimino, rotation
 
-    def generate_fixed(self,
-                       tetrimino_name: str,
-                       rotation: int) -> tuple[str, int, NDArray[np.uint8]]:
-        tetrimino = self._generate_tetrimino(tetrimino_name, rotation)
+    def generate_fixed(self, tetrimino_name: str,
+                       rotation: int) -> tuple[TetriminoType, int]:
+        tetrimino = self._generate_tetrimino(tetrimino_name)
         return tetrimino, rotation
 
-    def _generate_tetrimino(self, tetrimino_type: str, rotation: int):
+    def _generate_tetrimino(self, tetrimino_name: str) -> TetriminoType:
         try:
-            tetrimino = TetriminoType[tetrimino_type]
+            tetrimino = TetriminoType[tetrimino_name]
         except KeyError as exc:
-            raise KeyError(
-                    f'"{tetrimino_type}" is not a valid tetrimino type.'
-                ) from exc
-        return tetrimino.shape(rotation)
+            raise KeyError('"{}" is not a valid tetrimino type.'
+                           .format(tetrimino_name)) from exc
+        return tetrimino

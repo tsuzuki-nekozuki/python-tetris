@@ -44,8 +44,8 @@ class TestTetriminoFactory(unittest.TestCase):
         tetrimino_list = tetrimino_factory.tetrimino_choices
         rotation_list = tetrimino_factory.rotation_choices
         for name, rot in product(tetrimino_list, rotation_list):
-            ref = TetriminoType[name].shape(rot)
-            _, _, tgt = tetrimino_factory.generate_fixed(name, rot)
+            ref = TetriminoType[name]
+            tgt, rot = tetrimino_factory.generate_fixed(name, rot)            
             npt.assert_array_equal(tgt, ref)
 
 

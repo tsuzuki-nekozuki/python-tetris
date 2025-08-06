@@ -218,11 +218,11 @@ class Board {
     - tetris_field: NDArray[np.uint8]
     - active_tetrimino: Tetrimino | None
     ---
-    + create_new_tetrimino()
+    + create_new_tetrimino(tetrimino: TetriminoType, rot: int)
     + move_tetrimino(move: MoveType)
     + will_collide(move: MoveType)
     + update_play_field()
-    + delete_lines()
+    + delete_lines(cleared_lines: list[int])
     - _init_field()
     - _is_overlapping(tetrimino: Tetrimino)
     - _will_collide_left()
@@ -255,6 +255,7 @@ class Tetrimino {
     + move_right()
     + move_down()
     + set_state(rot: int, pos_x: int, pos_y: int)
+    + get_state()
 }
 
 Enum TetriminoType {
@@ -268,10 +269,10 @@ Enum TetriminoType {
     ---
     - id: int
     - shapes: list[NDArray[np.uint8]]
+    - size
     ---
     + shape(rotation: int)
     + rot(shape: NDArray[np.uint8])
-    + size()
 }
 
 class TetriminoFactory {
@@ -280,7 +281,7 @@ class TetriminoFactory {
     ---
     + generate_random()
     + generate_fixed(tetrimino_type: str, rotation: int)
-    - _generate(tetrimino_type: str, rotation: int)
+    - _generate(tetrimino_type: str)
 }
 
 class History {

@@ -11,7 +11,8 @@ class Tetrimino:
         # Position is top left corner of the Tetrimino
         self.pos_x = pos_x
         self.pos_y = pos_y
-        self.rot = rot if rot is None else tetrimino_type.rot()
+        self.rot = rot
+        self.size = tetrimino_type.size
 
     def rotate_clockwise(self):
         if self.rot is None:

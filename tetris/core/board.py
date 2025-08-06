@@ -22,9 +22,9 @@ class MoveType(Enum):
 
 
 class Board:
-    def __init__(self):
-        self.width: int = 10
-        self.height: int = 20
+    def __init__(self, width: int = 10, height: int = 20):
+        self.width: int = width
+        self.height: int = height
         self.max_tetrimino_size = max([i.size for i in TetriminoType])
         self.wall_id = len(TetriminoType) + 1
         self.ceil_margin: int = self.max_tetrimino_size - 1
@@ -39,18 +39,17 @@ class Board:
         w = self.width + self.side_margin * 2
         h = self.height + self.ceil_margin + self.floor_margin
         tetris_field = np.full((h, w), self.wall_id).astype(np.uint8)
-        tetris_field[self.floor_margin:self.max_height,
+        tetris_field[0:self.max_height - self.floor_margin,
                      self.side_margin:self.width + self.side_margin] = 0
         return tetris_field
 
-    def create_new_tetrimino(self, tetrimino: TetriminoType) -> bool:
-        pos_x = math.floor((self.max_width - tetrimino.size) / 2)
-        pos_y = self.max_height - (self.max_tetrimino_size - tetrimino.size)
-        self.active_tetrimino = Tetrimino(tetrimino, pos_x, pos_y)
-        if self._is_overlapping(self.active_tetrimino.get_state()):
+    def create_new_tetrimino(self, tetrimino: TetriminoType, rot: int) -> bool:
+        pos_x = math.floor((self.max_width + tetrimino.size) / 2)
+        pos_y = self.max_tetrimino_size - tetrimino.size
+        new_tetrimino = Tetrimino(tetrimino, pos_x, pos_y, rot)
+        if self._is_overlapping(new_tetrimino):
             return False
-
-        self.active_tetrimino = tetrimino
+        self.active_tetrimino = new_tetrimino
         return True
 
     def move_tetrimino(self, move: MoveType) -> bool:
@@ -61,8 +60,14 @@ class Board:
             raise ValueError('Unknown MoveType detected.')
 
     def update_play_field(self):
-        self.tetris_field += self.active_tetrimino.get_state()
-        filled_lines = np.where(~np.any(self.tetris_field == 0, axis=1))
+        x1 = self.active_tetrimino.pos_x
+        x2 = x1 + self.active_tetrimino.size
+        y1 = self.active_tetrimino.pos_y
+        y2 = y1 + self.active_tetrimino.size
+        self.tetris_field[y1:y2, x1:x2] += self.active_tetrimino.get_state()
+        filled_lines = np.where(~np.any(
+            self.tetris_field[:self.max_height - self.floor_margin] == 0,
+            axis=1))
         self.delete_lines(filled_lines[0].tolist())
 
     def delete_lines(self, cleared_lines: list[int]):
@@ -115,8 +120,8 @@ class Board:
 
     def _is_overlapping(self, tetrimino: Tetrimino) -> bool:
         x1 = tetrimino.pos_x
-        x2 = x1 + tetrimino.size()
+        x2 = x1 + tetrimino.size
         y1 = tetrimino.pos_y
-        y2 = y1 + tetrimino.size()
+        y2 = y1 + tetrimino.size
         cropped = self.tetris_field[y1:y2, x1:x2]
         return np.any(np.logical_and(tetrimino.get_state() > 0, cropped > 0))
