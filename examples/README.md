@@ -24,7 +24,7 @@ python -m tetris.examples.tetris_cli
 | s   | Move down               |
 | q   | Rotate counterclockwise |
 | e   | Rotate clockwise        |
-| x   | Quit game               |
+| q   | Quit game               |
 
 ### Notes
 
