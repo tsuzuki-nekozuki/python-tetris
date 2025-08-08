@@ -1,4 +1,5 @@
 from ..core.board import Board, MoveType
+from ..core.player_status import PlayerStatus
 from ..core.tetrimino_factory import TetriminoFactory
 
 
@@ -8,12 +9,13 @@ class TetrisCli:
         self.tetrimino_factory = TetriminoFactory()
         self.lock_delay_thr = lock_delay_thr
         self.lock_delay_counter = 0
-        self.is_playing_status = True
+        self.is_playing = True
+        self.player_status = PlayerStatus()
 
     def create_new_tetrimino(self):
         new_tetrimino, rot = self.tetrimino_factory.generate_random()
         if not self.board.create_new_tetrimino(new_tetrimino, rot):
-            self.is_playing_status = False
+            self.is_playing = False
 
     def move_left(self):
         self.board.move_tetrimino(MoveType.LEFT)
@@ -37,23 +39,24 @@ class TetrisCli:
         self.board.move_tetrimino(MoveType.ROTATE_CCW)
 
     def step(self):
-        if not self.is_playing_status:
+        if not self.is_playing:
             return
         status = self.board.move_tetrimino(MoveType.DOWN)
         if status:
             self.lock_delay_counter = 0
         else:
             self.lock_delay_counter += 1
-        print('count lock', self.lock_delay_counter)
         if self.lock_delay_counter >= self.lock_delay_thr:
-            self.board.update_play_field()
+            n_cleared_lines = self.board.update_play_field()
+            self.player_status.add_score(n_cleared_lines)
             self.create_new_tetrimino()
 
     def is_game_over(self):
-        return not self.is_playing_status
+        return not self.is_playing
 
     def render_data(self) -> dict:
         return {
             'board': self.board.get_play_field(),
             'active': self.board.get_active_field(),
+            'score': self.player_status.score,
         }

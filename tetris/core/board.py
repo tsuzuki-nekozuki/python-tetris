@@ -85,13 +85,15 @@ class Board:
                 ]
         return current_field
 
-    def update_play_field(self):
+    def update_play_field(self) -> int:
         self.tetris_field += self.get_active_field(no_margin=False)
         self.active_tetrimino = None
         filled_lines = np.where(~np.any(
             self.tetris_field[:self.max_height - self.floor_margin] == 0,
             axis=1))
-        self.delete_lines(filled_lines[0].tolist())
+        filled_lines = filled_lines[0].tolist()
+        self.delete_lines(filled_lines)
+        return len(filled_lines)
 
     def delete_lines(self, cleared_lines: list[int]):
         f_line_deleted = np.delete(self.tetris_field, cleared_lines, axis=0)
