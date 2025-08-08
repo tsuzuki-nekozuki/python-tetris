@@ -222,6 +222,8 @@ class Board {
     + move_tetrimino(move: MoveType)
     + will_collide(move: MoveType)
     + update_play_field()
+    + get_active_field(no_margin: bool)
+    + get_play_field(no_margin: bool)
     + delete_lines(cleared_lines: list[int])
     - _init_field()
     - _is_overlapping(tetrimino: Tetrimino)
@@ -248,6 +250,7 @@ class Tetrimino {
     - pos_x: int | None
     - pos_y: int | None
     - rot: int | None
+    - size: int
     ---
     + rotate_clockwise()
     + rotate_counter_clockwise()
