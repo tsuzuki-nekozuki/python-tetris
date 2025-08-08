@@ -70,6 +70,6 @@ class TestBoard(unittest.TestCase):
 
         # pos_x: 8 -> 7
         board.active_tetrimino.move_left()
-        
+
         self.assertEqual(board.active_tetrimino.pos_x, 7)
 
