@@ -27,7 +27,7 @@ class Tetrimino:
     def move_down(self):
         if self.pos_y is None:
             raise ValueError('Vertical position is not set.')
-        self.pos_y = self.pos_y - 1
+        self.pos_y = self.pos_y + 1
 
     def move_left(self):
         if self.pos_x is None:
